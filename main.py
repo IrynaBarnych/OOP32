@@ -73,6 +73,9 @@ obj.calculate(120)
 class OperatorOverloadMeta(type):
     def __new__(cls, name, bases, dct):
          dct["__add__"] = lambda self, other: self.add(other)
+         dct["__sub__"] = lambda self, other: self.sub(other)
+         dct["__mul__"] = lambda self, other: self.mul(other)
+         dct["__truediv__"] = lambda self, other: self.truediv(other)
          return super().__new__(cls, name, bases, dct)
 
 
@@ -81,27 +84,20 @@ class MyClass(metaclass=OperatorOverloadMeta):
         self.value = value
 
     def add(self, other):
-        return  self.value + other.value if isinstance(other, MyClass) else self.value + other
+        return self.value + other.value if isinstance(other, MyClass) else self.value + other
+    def sub(self, other):
+        return self.value - other.value if isinstance(other, MyClass) else self.value - other
+    def mul(self, other):
+        return self.value * other.value if isinstance(other, MyClass) else self.value * other
+    def truediv(self, other):
+        return self.value / other.value if isinstance(other, MyClass) else self.value / other
 
-obj1 = MyClass(5)
-obj2 = MyClass(6)
+obj1 = MyClass(10)
+obj2 = MyClass(2)
 print(obj1 + obj2)
-
-
-# -
-class OperatorOverloadMeta(type):
-    def __new__(cls, name, bases, dct):
-         dct["__sub__"] = lambda self, other: self.add(other)
-         return super().__new__(cls, name, bases, dct)
-
-
-class MyClass(metaclass=OperatorOverloadMeta):
-    def __init__(self, value):
-        self.value = value
-
-    def add(self, other):
-        return self.value - other.value if isinstance(other, MyClass) else self.value + other
-
-obj1 = MyClass(6)
-obj2 = MyClass(5)
 print(obj1 - obj2)
+print(obj1 * obj2)
+print(obj1 / obj2)
+
+
+
