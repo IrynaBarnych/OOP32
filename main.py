@@ -1,28 +1,20 @@
-"""Завдання 2
-Створіть метаклас, що перевіряє наявність певних
-атрибутів у всіх класах, які використовують цей
-метаклас."""
+# Завдання 4
+# Створіть метаклас, який автоматично реєструє всі
+# нові класи у певному реєстрі для подальшого
+# використання.
 
+class RegistryMeta(type):
+    cache = {}
 
-class MyMeta(type):
     def __new__(cls, name, bases, dct):
-        # перелік атрибутів, які мають бути в класі
-        required_attributes = ['attr1', 'attr2']
+        new_class = super().__new__(cls, name, bases, dct)
+        cls.cache[name] = new_class
+        return new_class
 
-        # перевіряємо, чи всі обов'язкові атрибути присутні в dct
-        for i in required_attributes:
-            if i not in dct:
-                raise AttributeError(f"Клас повинен мати обов'язковий атрибут: {i}")
+class MyClass1(metaclass=RegistryMeta):
+    pass
 
-        return super().__new__(cls, name, bases, dct)
+class MyClass2(metaclass=RegistryMeta):
+    pass
 
-
-class MyClass(metaclass=MyMeta):
-    attr1 = 10
-    attr2 = 100
-    # attr3 = "Hello!"
-
-print(
-    dir(MyClass))
-obj = MyClass()
-print(obj.attr1)
+print(RegistryMeta.cache)
