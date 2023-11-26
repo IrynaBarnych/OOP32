@@ -17,7 +17,6 @@ class MyClass1(metaclass=Meta):
 class MyClass2(metaclass=Meta):
     pass
 
-
 print(Meta.registered_classes)
 
 
