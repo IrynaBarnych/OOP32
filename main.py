@@ -2,26 +2,26 @@
 #Реалізуйте метаклас, що забороняє спадкування від
 #певних класів чи змінює порядок спадкування.
 
-class MyMeta(type):
-    def __new__(cls, name, bases, dct):
+class Meta(type):
+    def __init_subclass__(cls):
+        new_bases_order = (BaseClass2, BaseClass1)
+        cls.__bases__ = new_bases_order
+        super().__init_subclass__()
 
-        def hello(self):
-            print(f"Hello from {self.__class__.__name__}")
+class BaseClass1:
+    pass
 
-        dct["hello"] = hello
-        return super().__new__(cls, name, bases, dct)
+class BaseClass2:
+    pass
 
+class MyClass(metaclass=Meta):
+    pass
 
-class MyClass(metaclass=MyMeta):
-    attr = 10
-
-    def method(self):
-        pass
+print(MyClass.__bases__)
 
 
-print(dir(MyClass))
-obj = MyClass()
-print(obj.attr)
-obj.hello()
+
+
+
 
 
