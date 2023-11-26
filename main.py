@@ -2,41 +2,20 @@
 # Реалізуйте метаклас, що забороняє спадкування від певних класів чи змінює порядок спадкування.
 
 
-class MyMeta(type):
+class Meta(type):
+    forbidden_classes = []
+
     def __new__(cls, name, bases, dct):
-        # перелік атрибутів, які мають бути в класі
-        required_attributes = ['attr1', 'attr2']
+        for forbidden_class in cls.forbidden_classes:
+            if forbidden_class in bases:
+                return TypeError(f"Спадкування від класу '{forbidden_class.__name__}' не дозволено.")
+class MyClass(metaclass=Meta):
+    attr = 10
 
-        # перевіряємо, чи всі обов'язкові атрибути присутні в dct
-        for i in required_attributes:
-            if i not in dct:
-                raise AttributeError(f"Клас повинен мати обов'язковий атрибут: {i}")
-
-        # кортеж заборонених класів
-        forbidden_classes = (ForbiddenBaseClass1, ForbiddenBaseClass2)
-
-        # перевіряємо, чи жоден з заборонених класів не є в списку базових класів
-        if any(forbidden_class in bases for forbidden_class in forbidden_classes):
-            raise TypeError(f"Заборонено спадкування від певних класів: {forbidden_classes}")
-
-        return super().__new__(cls, name, bases, dct)
-
-
-class ForbiddenBaseClass1:
+class ForbiddenClass:
     pass
 
+Meta.forbidden_classes.append(ForbiddenClass)
 
-class ForbiddenBaseClass2:
-    pass
-
-
-class MyClass(metaclass=MyMeta):
-    attr1 = 10
-    attr2 = 100
-    # attr3 = "Hello!"
-
-
-print(dir(MyClass))
-obj = MyClass()
-print(obj.attr1)
-
+if ForbiddenClass in Meta.forbidden_classes:
+    print(f"Спадкування від класу '{ForbiddenClass.__name__}' не дозволено.")
