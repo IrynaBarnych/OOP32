@@ -2,6 +2,7 @@
 Задайте метаклас, що автоматично додає
 додатковий функціонал до всіх класів, що його
 використовують."""
+
 class MyMeta(type):
     def __new__(cls, name, bases, dct):
         dct["hello"] = lambda self: print(f"Hello from {self.__class__.__name__}")
