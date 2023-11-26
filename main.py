@@ -1,24 +1,24 @@
-#Завдання 3
-#Реалізуйте метаклас, що забороняє спадкування від
-#певних класів чи змінює порядок спадкування.
+#Завдання 4
+#Створіть метаклас, який автоматично реєструє всі
+#нові класи у певному реєстрі для подальшого використання.
 
 class Meta(type):
-    def __init_subclass__(cls):
-        new_bases_order = (BaseClass2, BaseClass1)
-        cls.__bases__ = new_bases_order
-        super().__init_subclass__()
+    registered_classes = {}
 
-class BaseClass1:
+    def __new__(cls, clsname, bases, clsdict):
+        new_class = super().__new__(cls, clsname, bases, clsdict)
+        cls.registered_classes[clsname] = new_class
+
+        return new_class
+
+class MyClass1(metaclass=Meta):
     pass
 
-class BaseClass2:
+class MyClass2(metaclass=Meta):
     pass
 
-class MyClass(metaclass=Meta):
-    pass
 
-print(MyClass.__bases__)
-
+print(Meta.registered_classes)
 
 
 
