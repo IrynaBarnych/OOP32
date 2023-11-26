@@ -18,7 +18,6 @@ class MyClass(metaclass=MyMeta):
     def method(self):
         pass
 
-
 print(dir(MyClass))
 obj = MyClass()
 print(obj.attr)
