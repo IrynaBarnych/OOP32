@@ -10,7 +10,6 @@ class RegistryMeta(type):
         new_class = super().__new__(cls, name, bases, dct)
         cls.cache[name] = new_class
         return new_class
-
 class MyClass1(metaclass=RegistryMeta):
     pass
 
