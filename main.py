@@ -17,6 +17,7 @@ class BaseClass2:
 class MyClass(metaclass=Meta):
     pass
 
+
 print(MyClass.__bases__)
 
 
